@@ -48,11 +48,8 @@ public class CustomUserServiceImpl implements UserDetailsService{
     private UserDetails buildUserDetails(String email, String password, USER_ROLE role) {
         if(role == null) role = USER_ROLE.ROLE_CUSTOMER;
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        authorities.add(new SimpleGrantedAuthority(role.toString()));
 
         return new org.springframework.security.core.userdetails.User(email, password, authorities);
     }
-
-
-    
 }

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.senne.domain.USER_ROLE;
+import com.senne.modal.VerificationCode;
+import com.senne.request.LoginRequest;
+import com.senne.response.ApiResponse;
 import com.senne.response.AuthResponse;
 import com.senne.response.SignupRequest;
 import com.senne.service.AuthService;
@@ -30,5 +33,21 @@ public class AuthController {
         res.setRole(USER_ROLE.ROLE_CUSTOMER);
 
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/sent/login-signup-otp")
+    public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody VerificationCode req) throws Exception {
+        authService.sentLoginOtp(req.getEmail());
+
+        ApiResponse res = new ApiResponse();
+        res.setMessage("OTP sent successfully");
+
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest req) throws Exception {
+        AuthResponse authResponse = authService.signin(req);
+        return ResponseEntity.ok(authResponse);
     }
 }
