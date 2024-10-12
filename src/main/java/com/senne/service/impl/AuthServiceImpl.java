@@ -23,9 +23,11 @@ import lombok.RequiredArgsConstructor;
 import com.senne.config.JwtProvider;
 import com.senne.domain.USER_ROLE;
 import com.senne.modal.Cart;
+import com.senne.modal.Seller;
 import com.senne.modal.User;
 import com.senne.modal.VerificationCode;
 import com.senne.repository.CartRepository;
+import com.senne.repository.SellerRepository;
 import com.senne.repository.UserRepository;
 import com.senne.repository.VerificationCodeRepository;
 import com.senne.request.LoginRequest;
@@ -39,6 +41,7 @@ import java.lang.Exception;
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final SellerRepository sellerRepository;
     private final VerificationCodeRepository verificationCodeRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
@@ -47,15 +50,22 @@ public class AuthServiceImpl implements AuthService {
 
     
     @Override
-    public void sentLoginOtp(String email) throws Exception {
+    public void sentLoginOtp(String email, USER_ROLE role) throws Exception {
         String SIGNIN_PREFIX = "signin_";
 
         if(email.startsWith(SIGNIN_PREFIX)) {
             email = email.substring(SIGNIN_PREFIX.length());
             
-            User user = userRepository.findByEmail(email);
-            if(user == null) {
-                throw new Exception("User not exist with provided email");
+            if(role.equals(USER_ROLE.ROLE_SELLER)) {
+                Seller seller = sellerRepository.findByEmail(email);
+                if(seller == null) {
+                    throw new Exception("Seller not exist with provided email");
+                }
+            } else {
+                User user = userRepository.findByEmail(email);
+                if(user == null) {
+                    throw new Exception("User not exist with provided email");
+                }
             }
         }
 
