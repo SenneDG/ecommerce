@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.senne.domain.AccountStatus;
+import com.senne.exceptions.SellerException;
 import com.senne.modal.Seller;
 import com.senne.modal.VerificationCode;
 import com.senne.repository.VerificationCodeRepository;
@@ -90,7 +91,7 @@ public class SellerController {
     @GetMapping("/{id}")
     public ResponseEntity<Seller> getSellerById(
         @PathVariable Long id
-    ) throws Exception {
+    ) throws SellerException {
         Seller seller = sellerService.getSellerById(id);
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }

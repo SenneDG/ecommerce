@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.senne.config.JwtProvider;
 import com.senne.domain.AccountStatus;
 import com.senne.domain.USER_ROLE;
+import com.senne.exceptions.SellerException;
 import com.senne.modal.Address;
 import com.senne.modal.Seller;
 import com.senne.repository.AddressRepository;
@@ -56,9 +57,9 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller getSellerById(Long id) throws Exception {
+    public Seller getSellerById(Long id) throws SellerException {
         Seller seller = sellerRepository.findById(id)
-            .orElseThrow(() -> new Exception("Seller not found with provided id - " + id));
+            .orElseThrow(() -> new SellerException("Seller not found with provided id - " + id));
  
         return seller;
     }
