@@ -28,8 +28,8 @@ public class Category {
     private String categoryId;
 
     @ManyToOne
-    private Category percentCategory;
+    private Category parentCategory;
 
     @NotNull
-    private Integer lever;
+    private Integer level;
 }
