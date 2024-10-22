@@ -19,8 +19,8 @@ import com.senne.response.PaymentLinkResponse;
 import com.senne.service.PaymentService;
 import com.senne.service.SellerReportService;
 import com.senne.service.SellerService;
+import com.senne.service.TransactionService;
 import com.senne.service.UserService;
-import com.stripe.service.climate.OrderService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,9 +31,8 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final UserService userService;
-    // private final TransactionService transactionService;
+    private final TransactionService transactionService;
     private final SellerService sellerService;
-    private final OrderService orderService;
     private final SellerReportService sellerReportService;
 
     @GetMapping("/{paymentId}")
@@ -52,7 +51,7 @@ public class PaymentController {
 
         if(paymentSuccess) {
             for(Order order : paymentOrder.getOrders()) {
-                // transactionService.createTransaction(order);
+                transactionService.createTransaction(order);
                 Seller seller = sellerService.getSellerById(order.getSellerId());
                 SellerReport report = sellerReportService.getSellerReport(seller);
                 report.setTotalOrders(report.getTotalOrders() + 1);
