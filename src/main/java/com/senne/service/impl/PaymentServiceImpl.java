@@ -8,7 +8,6 @@ import com.senne.domain.PaymentOrderStatus;
 import com.senne.modal.Order;
 import com.senne.modal.PaymentOrder;
 import com.senne.modal.User;
-import com.senne.repository.OrderRepository;
 import com.senne.repository.PaymentOrderRepository;
 import com.senne.service.PaymentService;
 import com.stripe.Stripe;
@@ -23,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class PaymentServiceImpl implements PaymentService {
     
     private final PaymentOrderRepository paymentOrderRepository;
-    private final OrderRepository orderRepository;
 
     private String stripeSecretKey="stripeSecretKey";
 

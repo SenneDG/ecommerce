@@ -34,7 +34,7 @@ public class Review {
     private String reviewText;
 
     @Column(nullable = false)
-    private String rating;
+    private double rating;
 
     @ElementCollection
     private List<String> productImages;
