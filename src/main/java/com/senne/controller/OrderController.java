@@ -20,12 +20,14 @@ import com.senne.modal.Address;
 import com.senne.modal.Cart;
 import com.senne.modal.Order;
 import com.senne.modal.OrderItem;
+import com.senne.modal.PaymentOrder;
 import com.senne.modal.Seller;
 import com.senne.modal.SellerReport;
 import com.senne.modal.User;
 import com.senne.response.PaymentLinkResponse;
 import com.senne.service.CartService;
 import com.senne.service.OrderService;
+import com.senne.service.PaymentService;
 import com.senne.service.SellerReportService;
 import com.senne.service.SellerService;
 import com.senne.service.UserService;
@@ -42,6 +44,7 @@ public class OrderController {
     private final CartService cartService;
     private final SellerService sellerService;
     private final SellerReportService sellerReportService;
+    private final PaymentService paymentService;
 
     @PostMapping()
     public ResponseEntity<PaymentLinkResponse> createOrderHandler(
@@ -52,10 +55,17 @@ public class OrderController {
 
         User user = userService.findUserByJwtToken(jwt);
         Cart cart = cartService.findUserCart(user);
-
         Set<Order> orders = orderService.createOrder(user, shippingAddress, cart);
 
+        PaymentOrder paymentOrder = paymentService.createOrder(user, orders);
         PaymentLinkResponse res = new PaymentLinkResponse();
+
+        String paymentUrl = paymentService.createStripePaymentLink(
+            user, 
+            paymentOrder.getAmount(),
+            paymentOrder.getId()
+        );
+        res.setPayment_link_url(paymentUrl);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
@@ -76,7 +86,7 @@ public class OrderController {
         @PathVariable Long orderId,
         @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        User user = userService.findUserByJwtToken(jwt);
+        userService.findUserByJwtToken(jwt);
         Order order = orderService.findOrderById(orderId);
 
         return new ResponseEntity<>(order, HttpStatus.ACCEPTED);
@@ -87,7 +97,7 @@ public class OrderController {
         @PathVariable Long orderItemId,
         @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        User user = userService.findUserByJwtToken(jwt);
+        userService.findUserByJwtToken(jwt);
         OrderItem orderItem = orderService.getOrderItemById(orderItemId);
     
         return new ResponseEntity<>(orderItem, HttpStatus.ACCEPTED);

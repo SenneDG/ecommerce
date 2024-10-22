@@ -54,7 +54,7 @@ public class Order {
 
     private double totalMrpPrice;
 
-    private double totalSellingPrice;
+    private Long totalSellingPrice;
 
     private Integer discount;
 
