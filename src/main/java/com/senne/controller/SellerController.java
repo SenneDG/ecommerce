@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.senne.domain.AccountStatus;
 import com.senne.exceptions.SellerException;
 import com.senne.modal.Seller;
+import com.senne.modal.SellerReport;
 import com.senne.modal.VerificationCode;
 import com.senne.repository.VerificationCodeRepository;
 import com.senne.request.LoginRequest;
 import com.senne.response.AuthResponse;
 import com.senne.service.AuthService;
 import com.senne.service.EmailService;
+import com.senne.service.SellerReportService;
 import com.senne.service.SellerService;
 import com.senne.util.OtpUtil;
 
@@ -38,6 +40,7 @@ public class SellerController {
     private final SellerService sellerService;
     private final AuthService authService;
     private final EmailService emailService;
+    private final SellerReportService sellerReportService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginSeller(
@@ -104,10 +107,15 @@ public class SellerController {
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }
 
-    // @GetMapping("/report")
-    // public ResponseEntity<String> getSellerReport() {
-        // IMPLEMENTATION
-    // }
+    @GetMapping("/report")
+    public ResponseEntity<SellerReport> getSellerReport(
+        @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+        // String email = jwtProvider.getEmailFromJwt(jwt);
+        Seller seller = sellerService.getSellerProfile(jwt);
+        SellerReport report = sellerReportService.getSellerReport(seller);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<Seller>> getAllSellers(
