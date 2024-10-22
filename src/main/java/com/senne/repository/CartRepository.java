@@ -6,4 +6,5 @@ import com.senne.modal.Cart;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
+    Cart findByUserId(Long id);
 }
