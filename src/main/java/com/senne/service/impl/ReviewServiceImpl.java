@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import com.senne.modal.Product;
 import com.senne.modal.Review;
 import com.senne.modal.User;
-import com.senne.repository.ProductRepository;
 import com.senne.repository.ReviewRepository;
-import com.senne.repository.UserRepository;
 import com.senne.request.CreateReviewRequest;
 import com.senne.service.ReviewService;
 
@@ -20,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
-    private final ProductRepository productRepository;
 
     @Override
     public Review createReview(CreateReviewRequest createReviewRequest, User user, Product product) {

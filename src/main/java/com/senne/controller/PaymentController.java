@@ -13,9 +13,7 @@ import com.senne.modal.Order;
 import com.senne.modal.PaymentOrder;
 import com.senne.modal.Seller;
 import com.senne.modal.SellerReport;
-import com.senne.modal.User;
 import com.senne.response.ApiResponse;
-import com.senne.response.PaymentLinkResponse;
 import com.senne.service.PaymentService;
 import com.senne.service.SellerReportService;
 import com.senne.service.SellerService;
@@ -41,9 +39,9 @@ public class PaymentController {
         @RequestParam String paymentLinkId,
         @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        User user = userService.findUserByJwtToken(jwt);
+        userService.findUserByJwtToken(jwt);
 
-        PaymentLinkResponse paymentResponse;
+        // PaymentLinkResponse paymentResponse;
 
         PaymentOrder paymentOrder = paymentService.getPaymentOrderByPaymentId(paymentLinkId);
 

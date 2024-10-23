@@ -1,7 +1,7 @@
 package com.senne.domain;
 
 public enum HomeCategorySection {
-    ELCTRIC_CATEGORIES,
+    ELECTRIC_CATEGORIES,
     GRID,
     SHOP_BY_CATEGORIES,
     DEALS
