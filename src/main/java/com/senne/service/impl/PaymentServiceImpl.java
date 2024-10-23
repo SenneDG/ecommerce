@@ -2,6 +2,7 @@ package com.senne.service.impl;
 
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.senne.domain.PaymentOrderStatus;
@@ -23,7 +24,8 @@ public class PaymentServiceImpl implements PaymentService {
     
     private final PaymentOrderRepository paymentOrderRepository;
 
-    private String stripeSecretKey="stripeSecretKey";
+    @Value("${stripe.secret.key}")
+    private String stripeSecretKey;
 
     @Override
     public PaymentOrder createOrder(User user, Set<Order> orders) {
@@ -57,6 +59,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Boolean ProceedPaymentOrder(PaymentOrder paymentOrder, String paymentId, String paymentLinkId) {
         if(paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)) {
             // I DIDNT IMPLEMENT THIS METHOD BECAUSE ONLY RAZORPAY WAS INTEGRATED
+            return true;
         }
 
         return false;
@@ -86,5 +89,4 @@ public class PaymentServiceImpl implements PaymentService {
         Session session = Session.create(params);
         return session.getUrl();
     }
-
 }
